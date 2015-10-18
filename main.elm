@@ -24,11 +24,6 @@ view address string =
         ]
         
 
-countStyle : Attribute
-countStyle = 
-    style [ ("font-size", "20px")]  
-
-
 main =
   StartApp.start { model = "50", 
                    view = view,

@@ -1,40 +1,47 @@
 module Clock where 
 
 import Html exposing (div,h1,text)
-import Svg exposing (circle, line, svg)
+import Svg exposing (circle,line,svg)
 import Svg.Attributes exposing (..)
+import String
 
 view address model =
-    div [clockStyle]
-        [ h1 [] [text "Earth Time"]
-        , svg [viewBox "0 0 102 102"]
-          [ circle [ cx  "51"
-                   , cy  "51"
-                   , r "50"
-                   , drawingStyle
-                   ] []
-          , line [ x1 "51"
-                 , y1 "51"
-                 , x2 "51"
-                 , y2 "0"
-                 , Svg.Attributes.transform "rotate 51 51 90"
-                 , drawingStyle
-                 ] []
-          ]
-        ]
-
-
-clockStyle : Svg.Attribute
-clockStyle =
-    Svg.Attributes.style 
-        [ ("width", "200px")
-        , ("height", "200px") 
-        ]
-
-drawingStyle : Svg.Attribute
-drawingStyle = 
-    Svg.Attributes.style 
-        [ ("stroke", "orange")
-        , ("stroke-width", "1")
-        , ("fill", "black")
-        ]  
+    let
+        radius = 50
+        centre = radius + 1
+        strokeColour = "orange"
+        angle = 213
+        rotation = String.concat [ "rotate("
+                                 , String.join ","
+                                              [ toString angle
+                                              , toString centre
+                                              , toString centre
+                                              ]
+                                 ,")"]
+        viewBoxSpec = String.join " " [ "0"
+                                      , "0"
+                                      , toString (2 * centre)
+                                      , toString (2 * centre)]
+    in
+        div [ style "width: 200px; height 200px;" ]
+            [ h1 [ style "font-family: monospace;"] 
+                 [ Html.text "Earth Time" ]
+            , svg [viewBox viewBoxSpec]
+              [ circle [ cx (toString centre)
+                       , cy (toString centre)
+                       , r  (toString radius)
+                       , fill "black"
+                       , stroke strokeColour
+                       , strokeWidth "1"
+                       ] []
+              , line [ x1 (toString centre)
+                     , y1 (toString centre)
+                     , x2 (toString centre)
+                     , y2 (toString (centre - radius))
+                     , Svg.Attributes.transform rotation
+                     , fill "black"
+                     , stroke strokeColour
+                     , strokeWidth "1"
+                     ] []
+              ]
+            ]              
