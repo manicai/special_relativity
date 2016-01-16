@@ -38,7 +38,7 @@ update action model =
         Reset ->
             { model | ship_time = 0, earth_time = 0 }
         Tick ->
-            { model | ship_time = model.ship_time + model.speed / frame_rate
+            { model | ship_time = model.ship_time + (scale_speed model.speed) / frame_rate
                     , earth_time = model.earth_time + 1 / frame_rate }
         SetSpeed sliderValue ->
             case String.toFloat sliderValue of
