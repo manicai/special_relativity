@@ -28,7 +28,7 @@ type Action
     | Tick
     | SetSpeed String
 
-frame_rate = 20
+frame_rate = 5
 
 actions = Signal.mailbox Tick
 
