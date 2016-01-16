@@ -1,4 +1,4 @@
-module Clock where 
+module Clock where
 
 import Html exposing (Html,div,h1,text)
 import Html.Attributes
@@ -6,12 +6,12 @@ import Svg exposing (circle,line,svg)
 import Svg.Attributes exposing (..)
 import String
 
-view : Float -> Html
-view seconds =
+view : Float -> String -> Html
+view seconds label =
     let
         radius = 50
         centre = radius + 1
-        angle = seconds * 6 
+        angle = seconds * 6
         rotation = String.concat [ "rotate("
                                  , String.join ","
                                               [ toString angle
@@ -25,8 +25,8 @@ view seconds =
                                       , toString (2 * centre)]
     in
         div [ Html.Attributes.style blockStyle ]
-            [ h1 [ Html.Attributes.style titleStyle] 
-                 [ Html.text "Earth Time" ]
+            [ h1 [ Html.Attributes.style titleStyle]
+                 [ Html.text label ]
             , svg [viewBox viewBoxSpec]
               [ circle [ cx (toString centre)
                        , cy (toString centre)
@@ -41,22 +41,23 @@ view seconds =
                      , Html.Attributes.style drawingStyle
                      ] []
               ]
-            ]              
+            ]
 
 blockStyle =
     [ ("width", "200px")
     , ("height", "200px")
+    , ("display", "inline-block")
     ]
 
-titleStyle = 
+titleStyle =
     [ ("font-family", "monospace")
     , ("font-variant", "small-caps")
     , ("text-align", "center")
     ]
 
 drawingStyle : List (String, String)
-drawingStyle = 
-    [ ("stroke", "orange") 
+drawingStyle =
+    [ ("stroke", "orange")
     , ("stroke-width", "1")
     , ("fill", "black")
     ]
