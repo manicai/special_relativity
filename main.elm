@@ -38,7 +38,8 @@ update action model =
         Reset ->
             { model | ship_time = 0, earth_time = 0 }
         Tick ->
-            { model | ship_time = model.ship_time + (scale_speed model.speed) / frame_rate
+            { model | ship_time = model.ship_time
+                                + (scale_speed model.speed) / frame_rate
                     , earth_time = model.earth_time + 1 / frame_rate }
         SetSpeed sliderValue ->
             case String.toFloat sliderValue of
@@ -54,17 +55,19 @@ view address model =
         [ Clock.view model.ship_time "Ship Time"
         , div [Html.Attributes.style [ ("display", "inline-block") ]]
               [ div [Html.Attributes.style speed_value_style]
-                    [ text (String.concat [(toString (scale_speed model.speed)), "c"]) ]
+                    [ text <| (toString (scale_speed model.speed)) ++ "c" ]
               , input [ type' "range"
                       , value (toString model.speed)
                       , Html.Attributes.min "0"
                       , Html.Attributes.max "100"
-                      , on "change" targetValue (\x -> Signal.message address (SetSpeed x))
+                      , on "change" targetValue
+                           (\x -> Signal.message address (SetSpeed x))
                       , Html.Attributes.style speed_slider_style
                       ] []
               , input [ type' "button"
                       , value "Reset"
-                      , on "click" targetValue (\x -> Signal.message address Reset)
+                      , on "click" targetValue
+                           (\x -> Signal.message address Reset)
                       , Html.Attributes.style reset_button_style
                       ] []
               ]
@@ -83,7 +86,9 @@ speed_value_style  = [("text-align", "center")]
 speed_slider_style = []
 
 port tick : Signal (Task x ())
-port tick = Signal.map (\t -> Signal.send actions.address Tick) (Time.fps frame_rate)
+port tick = Signal.map (\t -> Signal.send actions.address Tick)
+                       (Time.fps frame_rate)
 
 main =
-    Signal.map (view actions.address) <| Signal.foldp update (init 50.0) actions.signal
+    Signal.map (view actions.address)
+            <| Signal.foldp update (init 50.0) actions.signal
