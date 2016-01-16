@@ -51,16 +51,34 @@ view address model =
     div []
         [ Clock.view model.ship_time "Ship Time"
         , div [Html.Attributes.style [ ("display", "inline-block") ]]
-              [ div [] [ text (toString model.speed) ]
+              [ div [Html.Attributes.style speed_value_style]
+                    [ text (toString model.speed) ]
               , input [ type' "range"
                       , value (toString model.speed)
                       , Html.Attributes.min "0"
                       , Html.Attributes.max "100"
                       , on "change" targetValue (\x -> Signal.message address (SetSpeed x))
+                      , Html.Attributes.style speed_slider_style
+                      ] []
+              , input [ type' "button"
+                      , value "Reset"
+                      , on "click" targetValue (\x -> Signal.message address Reset)
+                      , Html.Attributes.style reset_button_style
                       ] []
               ]
         , Clock.view model.earth_time "Earth Time"
         ]
+
+reset_button_style = [("display", "block"),
+                      ("color", "white"),
+                      ("background", "black"),
+                      ("border", "1px solid orange"),
+                      ("text-align", "center"),
+                      ("margin", "auto"),
+                      ("width", "100px"),
+                      ("height", "40px")]
+speed_value_style  = [("text-align", "center")]
+speed_slider_style = []
 
 port tick : Signal (Task x ())
 port tick = Signal.map (\t -> Signal.send actions.address Tick) (Time.fps frame_rate)
