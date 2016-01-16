@@ -1,23 +1,24 @@
 module Clock where 
 
-import Html exposing (div,h1,text)
+import Html exposing (Html,div,h1,text)
 import Html.Attributes
 import Svg exposing (circle,line,svg)
 import Svg.Attributes exposing (..)
 import String
 
-view address model =
+view : Float -> Html
+view seconds =
     let
         radius = 50
         centre = radius + 1
-        angle = 213
+        angle = seconds * 6 
         rotation = String.concat [ "rotate("
                                  , String.join ","
                                               [ toString angle
                                               , toString centre
                                               , toString centre
                                               ]
-                                 ,")"]
+                                 , ")"]
         viewBoxSpec = String.join " " [ "0"
                                       , "0"
                                       , toString (2 * centre)
