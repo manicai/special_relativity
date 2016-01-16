@@ -45,6 +45,8 @@ update action model =
                 Ok value -> { model | speed = value }
                 Err msg -> { model | speed = 0 }
 
+scale_speed in_value =
+    in_value / 100.0
 
 view : Signal.Address Action -> Model -> Html
 view address model =
@@ -52,7 +54,7 @@ view address model =
         [ Clock.view model.ship_time "Ship Time"
         , div [Html.Attributes.style [ ("display", "inline-block") ]]
               [ div [Html.Attributes.style speed_value_style]
-                    [ text (toString model.speed) ]
+                    [ text (String.concat [(toString (scale_speed model.speed)), "c"]) ]
               , input [ type' "range"
                       , value (toString model.speed)
                       , Html.Attributes.min "0"
