@@ -39,7 +39,7 @@ update action model =
             { model | ship_time = 0, earth_time = 0 }
         Tick ->
             { model | ship_time = model.ship_time
-                                + (scale_speed model.speed) / frame_rate
+                                + (lorentz <| scale_speed model.speed) / frame_rate
                     , earth_time = model.earth_time + 1 / frame_rate }
         SetSpeed sliderValue ->
             case String.toFloat sliderValue of
@@ -48,6 +48,8 @@ update action model =
 
 scale_speed in_value =
     in_value / 100.0
+
+lorentz v = sqrt(1 - v * v)
 
 view : Signal.Address Action -> Model -> Html
 view address model =
