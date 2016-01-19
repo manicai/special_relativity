@@ -44,15 +44,13 @@ view seconds label =
             ]
 
 blockStyle =
-    [ ("width", "200px")
-    , ("height", "200px")
+    [ ("width", "300px")
+    , ("height", "300px")
     , ("display", "inline-block")
     ]
 
 titleStyle =
-    [ ("font-family", "monospace")
-    , ("font-variant", "small-caps")
-    , ("text-align", "center")
+    [ ("text-align", "center")
     ]
 
 drawingStyle : List (String, String)

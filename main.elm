@@ -53,11 +53,15 @@ lorentz v = sqrt(1 - v * v)
 
 view : Signal.Address Action -> Model -> Html
 view address model =
-    div []
+    div [ Html.Attributes.style global_style ]
         [ Clock.view model.ship_time "Ship Time"
-        , div [Html.Attributes.style [ ("display", "inline-block") ]]
+        , div [Html.Attributes.style [ ("display", "inline-block")
+                                     , ("vertical-align", "top")
+                                     , ("margin", "40px") ]]
               [ div [Html.Attributes.style speed_value_style]
-                    [ text <| (toString (scale_speed model.speed)) ++ "c" ]
+                    [ text <| "Speed "
+                           ++ (toString <| scale_speed model.speed)
+                           ++ "c" ]
               , input [ type' "range"
                       , value (toString model.speed)
                       , Html.Attributes.min "0"
@@ -75,16 +79,27 @@ view address model =
               ]
         , Clock.view model.earth_time "Earth Time"
         ]
-
-reset_button_style = [("display", "block"),
-                      ("color", "white"),
-                      ("background", "black"),
-                      ("border", "1px solid orange"),
-                      ("text-align", "center"),
-                      ("margin", "auto"),
-                      ("width", "100px"),
-                      ("height", "40px")]
-speed_value_style  = [("text-align", "center")]
+global_style = [ ("font-family", "monospace")
+               , ("font-variant", "small-caps")
+               , ("color", "orange")
+               , ("background", "black")
+               , ("padding", "30px")
+               ]
+reset_button_style = [ ("display", "block")
+                     , ("color", "white")
+                     , ("background", "black")
+                     , ("border", "1px solid orange")
+                     , ("text-align", "center")
+                     , ("margin", "30px auto")
+                     , ("width", "100px")
+                     , ("height", "40px")
+                     , ("font-family", "monospace")
+                     , ("font-variant", "small-caps")
+                     , ("font-size", "140%")
+                     ]
+speed_value_style  = [ ("text-align", "center")
+                     , ("font-size", "140%")
+                     ]
 speed_slider_style = []
 
 port tick : Signal (Task x ())
