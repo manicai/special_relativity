@@ -30,6 +30,10 @@ type Action
 
 frame_rate = 5
 
+port tick : Signal (Task x ())
+port tick = Signal.map (\t -> Signal.send actions.address Tick)
+                       (Time.fps frame_rate)
+
 actions = Signal.mailbox Tick
 
 update : Action -> Model -> Model
@@ -46,8 +50,7 @@ update action model =
                 Ok value -> { model | speed = value }
                 Err msg -> { model | speed = 0 }
 
-scale_speed in_value =
-    in_value / 100.0
+scale_speed in_value = in_value / 100.0
 
 lorentz v = sqrt(1 - v * v)
 
@@ -79,6 +82,7 @@ view address model =
               ]
         , Clock.view model.earth_time "Earth Time"
         ]
+
 global_style = [ ("font-family", "monospace")
                , ("font-variant", "small-caps")
                , ("color", "orange")
@@ -101,10 +105,6 @@ speed_value_style  = [ ("text-align", "center")
                      , ("font-size", "140%")
                      ]
 speed_slider_style = []
-
-port tick : Signal (Task x ())
-port tick = Signal.map (\t -> Signal.send actions.address Tick)
-                       (Time.fps frame_rate)
 
 main =
     Signal.map (view actions.address)
