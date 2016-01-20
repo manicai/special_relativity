@@ -21,8 +21,6 @@ init s =
     , earth_time = 0
     }
 
--- UPDATE
-
 type Action
     = Reset
     | Tick
@@ -54,6 +52,22 @@ scale_speed in_value = in_value / 100.0
 
 lorentz v = sqrt(1 - v * v)
 
+star_distance  = 4.367 -- light years
+
+years_to_star v = star_distance / v
+
+-- Because apparently Elm doesn't have a text formatting system built in
+-- and it's not worth an external dependency just to round to two
+-- decimal places.
+to_2dp number =
+  let
+    text_value = toString number
+    indices = String.indices "." text_value
+  in
+    case List.head indices of
+      Just value -> String.slice 0 (value + 3) text_value
+      Nothing -> text_value
+
 view : Signal.Address Action -> Model -> Html
 view address model =
     div [ Html.Attributes.style global_style ]
@@ -79,6 +93,15 @@ view address model =
                            (\x -> Signal.message address Reset)
                       , Html.Attributes.style reset_button_style
                       ] []
+              , div [ Html.Attributes.style speed_value_style ]
+                    [ text "Distance to Alpha Centauri" ]
+              , div [ Html.Attributes.style speed_value_style ]
+                    [ text "25,672,000,000,000 miles" ]
+              , div [ Html.Attributes.style speed_value_style ]
+                    [ text "Time to Alpha Centauri" ]
+              , div [ Html.Attributes.style speed_value_style ]
+                    [ text <| (to_2dp <| years_to_star <| scale_speed model.speed)
+                           ++ " years"]
               ]
         , Clock.view model.earth_time "Earth Time"
         ]
