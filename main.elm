@@ -74,7 +74,8 @@ view address model =
         [ Clock.view model.ship_time "Ship Time"
         , div [Html.Attributes.style [ ("display", "inline-block")
                                      , ("vertical-align", "top")
-                                     , ("margin", "40px") ]]
+                                     , ("margin", "40px")
+                                     , ("text-align", "center") ]]
               [ div [Html.Attributes.style speed_value_style]
                     [ text <| "Speed "
                            ++ (toString <| scale_speed model.speed)
@@ -124,10 +125,12 @@ reset_button_style = [ ("display", "block")
                      , ("font-variant", "small-caps")
                      , ("font-size", "140%")
                      ]
-speed_value_style  = [ ("text-align", "center")
-                     , ("font-size", "140%")
+speed_value_style  = [ ("font-size", "140%")
+                     , ("margin-top", "1ex")
                      ]
-speed_slider_style = []
+speed_slider_style = [ ("margin-top", "30px")
+
+                     ]
 
 main =
     Signal.map (view actions.address)
