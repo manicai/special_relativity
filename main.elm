@@ -26,7 +26,7 @@ type Action
     | Tick
     | SetSpeed String
 
-frame_rate = 5
+frame_rate = 1
 
 port tick : Signal (Task x ())
 port tick = Signal.map (\t -> Signal.send actions.address Tick)
