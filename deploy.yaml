@@ -1,7 +1,0 @@
-default:
-    root: '_build'
-    key: 'AKIAJDYROLU2SMRTP4PQ'
-    secret: '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'
-    bucket: 'relativity.manicai.net'
-    region: 'eu-west-1'
-
